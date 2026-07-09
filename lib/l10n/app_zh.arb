@@ -1,0 +1,248 @@
+{
+  "@@locale": "zh",
+  "appTitle": "Final ROM",
+  "tabSingleFile": "单文件",
+  "tabThreeDs": "3DS",
+  "tabBatchMode": "批量模式",
+  "tabPatcher": "补丁工具",
+  "tabHasher": "哈希校验",
+  "btnDecrypt": "解密",
+  "btnEncrypt": "加密",
+  "btnCancel": "取消",
+  "btnClearQueue": "清空",
+  "btnBrowse": "浏览",
+  "btnBrowseFolder": "文件夹",
+  "settingsTitle": "设置",
+  "trimPadding": "去除尾部填充（解密时）",
+  "trimPaddingDesc": "去除文件末尾无用的 0xFF 填充数据，节省空间。",
+  "outputHandling": "输出处理方式",
+  "outputHandlingNewFile": "创建新文件",
+  "outputHandlingOverwrite": "覆盖原文件（不可逆）",
+  "outputLocation": "输出位置",
+  "outputLocationNextToSource": "源文件旁边",
+  "outputLocationCustom": "自定义文件夹",
+  "outputLocationAppDocs": "设备文件夹（应用存储）",
+  "conflictBehavior": "输出已存在时",
+  "conflictAsk": "询问",
+  "conflictOverwrite": "覆盖",
+  "conflictRename": "自动重命名",
+  "parallelism": "并行数",
+  "parallelismDesc": "同时处理的文件数",
+  "themeMode": "外观",
+  "themeSystem": "跟随系统",
+  "themeLight": "浅色",
+  "themeDark": "深色",
+  "dynamicColor": "使用 Material You 动态取色",
+  "language": "语言",
+  "languageSystem": "跟随系统",
+  "statusIdle": "空闲",
+  "statusDone": "完成",
+  "statusError": "错误",
+  "statusSaving": "保存中...",
+  "statusFileSelected": "{size} MiB",
+  "@statusFileSelected": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "trimMessage": "已去除 {saved} 字节的填充数据",
+  "@trimMessage": {
+    "placeholders": {
+      "saved": {
+        "type": "String"
+      }
+    }
+  },
+  "batchSummary": "成功 {success} 个，失败 {failed} 个（用时 {time} 秒）",
+  "@batchSummary": {
+    "placeholders": {
+      "success": {
+        "type": "int"
+      },
+      "failed": {
+        "type": "int"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "batchProgress": "已处理 {current} / {total}",
+  "@batchProgress": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "errNoFileSelected": "未选择文件",
+  "errOutputFolderNotSelected": "未选择输出文件夹",
+  "confirmOverwriteTitle": "覆盖原文件？",
+  "confirmOverwriteContent": "此操作将不可逆地覆盖原始 ROM 文件。确定要继续吗？",
+  "btnYes": "是",
+  "btnNo": "否",
+  "errInvalidRom": "无效的 3DS ROM",
+  "fileConflictTitle": "文件已存在",
+  "fileConflictContent": "文件 {filename} 已存在。请选择操作：",
+  "@fileConflictContent": {
+    "placeholders": {
+      "filename": {
+        "type": "String"
+      }
+    }
+  },
+  "actionCancel": "取消",
+  "actionOverwrite": "覆盖",
+  "actionRename": "重命名",
+  "queueFileProgress": "文件 {current} / {total}",
+  "@queueFileProgress": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "queueDoneSummary": "已完成 {ok} / {total}",
+  "@queueDoneSummary": {
+    "placeholders": {
+      "ok": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "queueFailuresSummary": "失败 {failed} / {total}",
+  "@queueFailuresSummary": {
+    "placeholders": {
+      "failed": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "aboutTitle": "关于",
+  "aboutContent": "本应用完全离线运行，不收集任何个人数据。",
+  "dragDropHintSingle": "将 .3ds ROM 文件拖放到此处",
+  "dragDropHintBatch": "将 .3ds ROM 文件拖放到此处",
+  "dragDropHintPatch": "将 ROM 或补丁文件拖放到此处",
+  "dragDropHintHash": "将文件拖放到此处进行哈希校验",
+  "dragDropOnly3ds": "仅支持 .3ds 文件",
+  "dragDropSubtext": "释放鼠标以放置文件",
+  "romFile": "基础 ROM 文件",
+  "patchFile": "补丁文件（.ips、.ups、.bps、.ppf、.aps、.ebp、.dps、.xdelta）",
+  "btnBrowseRom": "浏览 ROM",
+  "btnBrowsePatch": "浏览补丁",
+  "btnPatch": "应用补丁",
+  "errNoPatchSelected": "未选择补丁文件",
+  "statusPatching": "正在应用补丁...",
+  "fileToHash": "待哈希文件",
+  "statusHashing": "正在计算哈希值...",
+  "ignoreChecksum": "忽略校验和",
+  "ignoreChecksumSubtitle": "跳过 ROM 和补丁的校验验证",
+  "errUnsupportedPatch": "不支持的补丁格式",
+  "patchReportFormat": "格式：{format}",
+  "@patchReportFormat": {
+    "placeholders": {
+      "format": {
+        "type": "String"
+      }
+    }
+  },
+  "patchReportNoChecksums": "此格式没有可验证的内置校验和。",
+  "checkOutcomePassed": "通过",
+  "checkOutcomeSkipped": "已跳过",
+  "tabChd": "CHD",
+  "tabSwitch": "Switch",
+  "chdCreate": "创建 CHD",
+  "chdExtract": "提取 CHD",
+  "btnCreate": "创建",
+  "btnExtract": "提取",
+  "btnMerge": "合并",
+  "btnUnmerge": "拆分",
+  "btnCompress": "压缩",
+  "btnDecompress": "解压",
+  "chdCreateHint": "将 .cue 或 .bin 文件拖放到此处",
+  "chdExtractHint": "将 .chd 文件拖放到此处",
+  "switchMergeTab": "合并",
+  "switchSplitTab": "拆分",
+  "switchCompressTab": "压缩",
+  "switchDecompressTab": "解压",
+  "switchMergeHint": "将基础和更新 .nsp / .xci 文件拖放到此处",
+  "switchUnmergeHint": "将已合并的 .nsp 文件拖放到此处",
+  "switchCompressHint": "将 .nsp 文件拖放到此处",
+  "switchDecompressHint": "将 .nsz 文件拖放到此处",
+  "switchKeysRequired": "此操作需要 prod.keys 文件",
+  "keysFile": "prod.keys 文件",
+  "btnBrowseKeys": "浏览密钥",
+  "compressionLevel": "压缩级别",
+  "statusCompressing": "正在压缩...",
+  "statusExtracting": "正在提取...",
+  "statusMerging": "正在合并...",
+  "statusUnmerging": "正在拆分...",
+  "statusDecompressing": "正在解压...",
+  "unmergeSavedMessage": "已写入 {count} 个 NSP 文件到 {dir}",
+  "@unmergeSavedMessage": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "dir": {
+        "type": "String"
+      }
+    }
+  },
+  "unmergeMissingNcaWarning": "{count} 个标题引用了源 NSP 中缺失的 NCA",
+  "@unmergeMissingNcaWarning": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "patchCompatibilityChecking": "正在验证 ROM 兼容性...",
+  "patchCompatibilityCompatible": "补丁与所选 ROM 兼容",
+  "patchCompatibilityIncompatible": "警告：ROM 校验和不匹配。此补丁可能不兼容。",
+  "patchCompatibilityUnverifiable": "此补丁格式不支持预先验证",
+  "btnShare": "分享",
+  "savedToFile": "已保存：{name}",
+  "@savedToFile": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "alreadyDecryptedMessage": "已经解密 — 未创建新文件",
+  "clearCache": "清除缓存",
+  "clearCacheSubtitle": "删除临时和缓存文件",
+  "cacheCleared": "缓存已清除",
+  "btnSave": "保存",
+  "btnShowInFolder": "在文件夹中显示",
+  "statusCancelling": "正在取消…",
+  "errInvalidFileType": "所选操作不支持的文件类型",
+  "keysRequired3ds": "此操作需要 3dskeys.txt 文件",
+  "copiedToClipboard": "已将 {label} 复制到剪贴板",
+  "@copiedToClipboard": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "chdCodecsTitle": "压缩编解码器",
+  "chdCodecsHelper": "逗号分隔：cdlz、cdzl、cdfl、cdzs、none",
+  "chdHunkTitle": "数据块大小（字节）",
+  "chdHunkHelper": "留空使用默认值"
+}

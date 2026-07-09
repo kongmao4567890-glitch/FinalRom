@@ -35,6 +35,7 @@ const Map<String, String> _supportedLanguages = {
   'es': 'Español',
   'fr': 'Français',
   'ja': '日本語',
+  'zh': '中文',
 };
 
 const Map<String, int> _presetColors = {
