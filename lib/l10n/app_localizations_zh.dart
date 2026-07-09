@@ -434,4 +434,142 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get chdHunkHelper => '留空使用默认值';
+
+  @override
+  String get headingAppearance => '外观与语言';
+
+  @override
+  String get headingProcessing => '处理选项';
+
+  @override
+  String get headingPerformance => '性能';
+
+  @override
+  String get heading3ds => '3DS 选项';
+
+  @override
+  String get headingPatcher => '补丁选项';
+
+  @override
+  String get headingChd => 'CHD 选项';
+
+  @override
+  String get headingSwitch => 'Switch 选项';
+
+  @override
+  String get headingSystem => '系统与关于';
+
+  @override
+  String get themeAccentColor => '主题强调色';
+
+  @override
+  String get themeAccentColorDesc => '为应用主题选择一个自定义种子色';
+
+  @override
+  String get performancePreset => '性能预设';
+
+  @override
+  String get presetWeak => '低性能设备';
+
+  @override
+  String get presetBalanced => '平衡';
+
+  @override
+  String get presetHigh => '高性能';
+
+  @override
+  String get presetCustom => '自定义';
+
+  @override
+  String get presetWeakDesc => '低内存/CPU占用，适合入门级手机；限制并行处理。';
+
+  @override
+  String get presetBalancedDesc => '速度与资源使用的合理平衡，适合大多数设备。';
+
+  @override
+  String get presetHighDesc => '使用全部CPU核心以获得最快的转换速度，适合桌面电脑和旗舰手机。';
+
+  @override
+  String get presetCustomDesc => '使用下方单独设置的值。';
+
+  @override
+  String get presetTunedNote => '每个ROM自动调优——下方手动设置值将被忽略。';
+
+  @override
+  String get compressionCodecsCustom => '自定义…';
+
+  @override
+  String get cpuThreads => 'CPU 线程数 (-np)';
+
+  @override
+  String get allCores => '所有可用核心';
+
+  @override
+  String threadCount(int count) => '$count 个线程';
+
+  @override
+  String get hunkSize => '数据块大小 (-hs)';
+
+  @override
+  String get hunkSizeDefault => '默认';
+
+  @override
+  String get zstdThreads => 'Zstandard 线程数';
+
+  @override
+  String get zstdThreadsDefault => '默认（核心数 - 2）';
+
+  @override
+  String get ioChunkSize => 'I/O 块大小';
+
+  @override
+  String ioChunkSizeUnit(int size) => '$size MB';
+
+  @override
+  String get parallelNca => '并行 NCA 压缩';
+
+  @override
+  String get parallelNcaDesc => '使用隔离线程并行压缩多个 NCA';
+
+  @override
+  String get nszBenchmark => 'NSZ 性能测试';
+
+  @override
+  String get nszBenchmarkDesc => '测试和对比 NSZ 压缩设置';
+
+  @override
+  String get exportLogs => '导出应用日志';
+
+  @override
+  String get exportLogsDesc => '导出日志以帮助调试问题';
+
+  @override
+  String logsExported(String path) => '日志已从 $path 导出';
+
+  @override
+  String get noLogsYet => '暂无可用日志';
+
+  @override
+  String get credits => '致谢与鸣谢';
+
+  @override
+  String get creditsSubtitle => '查看开源许可证';
+
+  @override
+  String get close => '关闭';
+
+  @override
+  String get allFilesAccess => '全部文件存储权限';
+
+  @override
+  String get allFilesGranted => '已授权——应用可以读写设备上任何位置的 ROM 文件。';
+
+  @override
+  String get allFilesRequired => '需要此权限才能读写应用文件夹之外的 ROM 文件。';
+
+  @override
+  String get granted => '已授权';
+
+  @override
+  String get grant => '授权';
 }

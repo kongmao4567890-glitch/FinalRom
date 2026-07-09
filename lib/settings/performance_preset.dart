@@ -11,22 +11,7 @@ import 'dart:io';
 enum PerformancePreset { weak, mid, high, custom }
 
 extension PerformancePresetLabel on PerformancePreset {
-  String get label => switch (this) {
-        PerformancePreset.weak => 'Weak device',
-        PerformancePreset.mid => 'Balanced',
-        PerformancePreset.high => 'High performance',
-        PerformancePreset.custom => 'Custom',
-      };
-
-  String get description => switch (this) {
-        PerformancePreset.weak =>
-          'Low RAM/CPU use for entry-level phones; caps parallelism.',
-        PerformancePreset.mid =>
-          'Sensible balance of speed and resource use for most devices.',
-        PerformancePreset.high =>
-          'Uses all CPU cores for fastest conversions on desktops/strong phones.',
-        PerformancePreset.custom => 'Use the individual values set below.',
-      };
+  // Labels and descriptions moved to AppLocalizations for i18n.
 }
 
 /// Describes the input being processed so the resolver can adapt a tier's budget

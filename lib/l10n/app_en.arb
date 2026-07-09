@@ -247,5 +247,72 @@
   "chdCodecsTitle": "Compression codecs",
   "chdCodecsHelper": "Comma-separated: cdlz, cdzl, cdfl, cdzs, none",
   "chdHunkTitle": "Hunk size (bytes)",
-  "chdHunkHelper": "Leave empty for default"
+  "chdHunkHelper": "Leave empty for default",
+  "headingAppearance": "Appearance & Localization",
+  "headingProcessing": "Processing Options",
+  "headingPerformance": "Performance",
+  "heading3ds": "3DS Options",
+  "headingPatcher": "Patcher Options",
+  "headingChd": "CHD Options",
+  "headingSwitch": "Switch Options",
+  "headingSystem": "System & About",
+  "themeAccentColor": "Theme Accent Color",
+  "themeAccentColorDesc": "Choose a custom seed color for the app theme",
+  "performancePreset": "Performance preset",
+  "presetWeak": "Weak device",
+  "presetBalanced": "Balanced",
+  "presetHigh": "High performance",
+  "presetCustom": "Custom",
+  "presetWeakDesc": "Low RAM/CPU use for entry-level phones; caps parallelism.",
+  "presetBalancedDesc": "Sensible balance of speed and resource use for most devices.",
+  "presetHighDesc": "Uses all CPU cores for fastest conversions on desktops/strong phones.",
+  "presetCustomDesc": "Use the individual values set below.",
+  "presetTunedNote": "Tuned automatically per ROM — the manual values below are ignored.",
+  "compressionCodecsCustom": "Custom…",
+  "cpuThreads": "CPU threads (-np)",
+  "allCores": "All available cores",
+  "threadCount": "{count} thread(s)",
+  "@threadCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "hunkSize": "Hunk size (-hs)",
+  "hunkSizeDefault": "Default",
+  "zstdThreads": "Zstandard threads",
+  "zstdThreadsDefault": "Default (cores - 2)",
+  "ioChunkSize": "I/O Chunk Size",
+  "ioChunkSizeUnit": "{size} MB",
+  "@ioChunkSizeUnit": {
+    "placeholders": {
+      "size": {
+        "type": "int"
+      }
+    }
+  },
+  "parallelNca": "Parallel NCA Compression",
+  "parallelNcaDesc": "Compress multiple NCAs in parallel using isolates",
+  "nszBenchmark": "NSZ Performance Benchmark",
+  "nszBenchmarkDesc": "Test and compare NSZ compression settings",
+  "exportLogs": "Export App Logs",
+  "exportLogsDesc": "Export logs to help debug issues",
+  "logsExported": "Logs exported from {path}",
+  "@logsExported": {
+    "placeholders": {
+      "path": {
+        "type": "String"
+      }
+    }
+  },
+  "noLogsYet": "No logs available yet",
+  "credits": "Credits & Acknowledgments",
+  "creditsSubtitle": "View open source licenses",
+  "close": "Close",
+  "allFilesAccess": "All-files storage access",
+  "allFilesGranted": "Granted — the app can read and write ROMs anywhere on the device.",
+  "allFilesRequired": "Required to read and write ROMs outside the app folder.",
+  "granted": "Granted",
+  "grant": "Grant"
 }

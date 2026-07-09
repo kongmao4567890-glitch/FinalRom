@@ -903,6 +903,53 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Leave empty for default'**
   String get chdHunkHelper;
+
+  String get headingAppearance;
+  String get headingProcessing;
+  String get headingPerformance;
+  String get heading3ds;
+  String get headingPatcher;
+  String get headingChd;
+  String get headingSwitch;
+  String get headingSystem;
+  String get themeAccentColor;
+  String get themeAccentColorDesc;
+  String get performancePreset;
+  String get presetWeak;
+  String get presetBalanced;
+  String get presetHigh;
+  String get presetCustom;
+  String get presetWeakDesc;
+  String get presetBalancedDesc;
+  String get presetHighDesc;
+  String get presetCustomDesc;
+  String get presetTunedNote;
+  String get compressionCodecsCustom;
+  String get cpuThreads;
+  String get allCores;
+  String threadCount(int count);
+  String get hunkSize;
+  String get hunkSizeDefault;
+  String get zstdThreads;
+  String get zstdThreadsDefault;
+  String get ioChunkSize;
+  String ioChunkSizeUnit(int size);
+  String get parallelNca;
+  String get parallelNcaDesc;
+  String get nszBenchmark;
+  String get nszBenchmarkDesc;
+  String get exportLogs;
+  String get exportLogsDesc;
+  String logsExported(String path);
+  String get noLogsYet;
+  String get credits;
+  String get creditsSubtitle;
+  String get close;
+  String get allFilesAccess;
+  String get allFilesGranted;
+  String get allFilesRequired;
+  String get granted;
+  String get grant;
 }
 
 class _AppLocalizationsDelegate

@@ -80,11 +80,11 @@ class SettingsScreen extends StatelessWidget {
               child: ListView(
                 padding: const EdgeInsets.all(16.0),
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.fromLTRB(16, 16, 16, 4),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 16, 16, 4),
                     child: Text(
-                      'Appearance & Localization',
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                      loc.headingAppearance,
+                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                     ),
                   ),
                   ListTile(
@@ -128,8 +128,8 @@ class SettingsScreen extends StatelessWidget {
                     ),
                   ),
                   ListTile(
-                    title: const Text('Theme Accent Color'),
-                    subtitle: const Text('Choose a custom seed color for the app theme'),
+                    title: Text(loc.themeAccentColor),
+                    subtitle: Text(loc.themeAccentColorDesc),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
@@ -186,11 +186,11 @@ class SettingsScreen extends StatelessWidget {
                     onChanged: (val) => cubit.updateSettings(settings.copyWith(dynamicColor: val)),
                   ),
                   const Divider(height: 32),
-                  const Padding(
-                    padding: EdgeInsets.fromLTRB(16, 16, 16, 4),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 16, 16, 4),
                     child: Text(
-                      'Processing Options',
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                      loc.headingProcessing,
+                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                     ),
                   ),
                   if (FileService.supportsInPlace) ...[
@@ -273,20 +273,20 @@ class SettingsScreen extends StatelessWidget {
                     ),
                   ),
                   const Divider(height: 32),
-                  const Padding(
-                    padding: EdgeInsets.fromLTRB(16, 16, 16, 4),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 16, 16, 4),
                     child: Text(
-                      'Performance',
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                      loc.headingPerformance,
+                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                     ),
                   ),
                   ListTile(
-                    title: const Text('Performance preset'),
+                    title: Text(loc.performancePreset),
                     subtitle: Text(
                       settings.performancePreset == PerformancePreset.custom
-                          ? 'Using the individual values set below.'
-                          : '${settings.performancePreset.description}\n'
-                                'Tuned automatically per ROM — the manual values below are ignored.',
+                          ? loc.presetCustomDesc
+                          : '${_presetDesc(settings.performancePreset, loc)}\n'
+                                '${loc.presetTunedNote}',
                     ),
                     isThreeLine: settings.performancePreset != PerformancePreset.custom,
                     trailing: _buildDropdown<PerformancePreset>(
@@ -297,7 +297,7 @@ class SettingsScreen extends StatelessWidget {
                           .map(
                             (preset) => DropdownMenuEntry<PerformancePreset>(
                               value: preset,
-                              label: preset.label,
+                              label: _presetLabel(preset, loc),
                             ),
                           )
                           .toList(),
@@ -309,11 +309,11 @@ class SettingsScreen extends StatelessWidget {
                     ),
                   ),
                   const Divider(height: 32),
-                  const Padding(
-                    padding: EdgeInsets.fromLTRB(16, 16, 16, 4),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 16, 16, 4),
                     child: Text(
-                      '3DS Options',
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                      loc.heading3ds,
+                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                     ),
                   ),
                   _lockable(
@@ -357,11 +357,11 @@ class SettingsScreen extends StatelessWidget {
                     onChanged: (val) => cubit.updateSettings(settings.copyWith(trimPadding: val)),
                   ),
                   const Divider(height: 32),
-                  const Padding(
-                    padding: EdgeInsets.fromLTRB(16, 16, 16, 4),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 16, 16, 4),
                     child: Text(
-                      'Patcher Options',
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                      loc.headingPatcher,
+                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                     ),
                   ),
                   SwitchListTile(
@@ -372,17 +372,17 @@ class SettingsScreen extends StatelessWidget {
                         cubit.updateSettings(settings.copyWith(ignoreChecksum: val)),
                   ),
                   const Divider(height: 32),
-                  const Padding(
-                    padding: EdgeInsets.fromLTRB(16, 16, 16, 4),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 16, 16, 4),
                     child: Text(
-                      'CHD Options',
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                      loc.headingChd,
+                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                     ),
                   ),
                   _lockable(
                     locked: tuningLocked,
                     child: ListTile(
-                      title: const Text('Compression codecs'),
+                      title: Text(loc.chdCodecsTitle),
                       subtitle: Text(effective.chdCodecs),
                       trailing: _buildDropdown<String>(
                         context: context,
@@ -394,7 +394,7 @@ class SettingsScreen extends StatelessWidget {
                           ..._chdCodecPresets.entries.map(
                             (e) => DropdownMenuEntry(value: e.key, label: e.value),
                           ),
-                          const DropdownMenuEntry(value: _customCodecKey, label: 'Custom…'),
+                          DropdownMenuEntry(value: _customCodecKey, label: loc.compressionCodecsCustom),
                         ],
                         onSelected: (val) {
                           if (val == null) return;
@@ -410,11 +410,11 @@ class SettingsScreen extends StatelessWidget {
                   _lockable(
                     locked: tuningLocked,
                     child: ListTile(
-                      title: const Text('CPU threads (-np)'),
+                      title: Text(loc.cpuThreads),
                       subtitle: Text(
                         effective.chdNumProcessors == 0
-                            ? 'All available cores'
-                            : '${effective.chdNumProcessors} thread(s)',
+                            ? loc.allCores
+                            : loc.threadCount(effective.chdNumProcessors),
                       ),
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
@@ -431,7 +431,7 @@ class SettingsScreen extends StatelessWidget {
                           ),
                           Text(
                             effective.chdNumProcessors == 0
-                                ? 'All'
+                                ? loc.allCores
                                 : '${effective.chdNumProcessors}',
                             style: Theme.of(context).textTheme.titleMedium,
                           ),
@@ -452,30 +452,30 @@ class SettingsScreen extends StatelessWidget {
                   _lockable(
                     locked: tuningLocked,
                     child: ListTile(
-                      title: const Text('Hunk size (-hs)'),
+                      title: Text(loc.hunkSize),
                       subtitle: Text(
-                        effective.chdHunkBytes == 0 ? 'Default' : '${effective.chdHunkBytes} bytes',
+                        effective.chdHunkBytes == 0 ? loc.hunkSizeDefault : '${effective.chdHunkBytes} bytes',
                       ),
                       trailing: const Icon(Icons.edit),
                       onTap: () => _editChdHunk(context, cubit, settings),
                     ),
                   ),
                   const Divider(height: 32),
-                  const Padding(
-                    padding: EdgeInsets.fromLTRB(16, 16, 16, 4),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 16, 16, 4),
                     child: Text(
-                      'Switch Options',
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                      loc.headingSwitch,
+                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                     ),
                   ),
                   _lockable(
                     locked: tuningLocked,
                     child: ListTile(
-                      title: const Text('Zstandard threads'),
+                      title: Text(loc.zstdThreads),
                       subtitle: Text(
                         effective.nszThreadCount == 0
-                            ? 'Default (cores - 2)'
-                            : '${effective.nszThreadCount} thread(s)',
+                            ? loc.zstdThreadsDefault
+                            : loc.threadCount(effective.nszThreadCount),
                       ),
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
@@ -489,7 +489,7 @@ class SettingsScreen extends StatelessWidget {
                                 : null,
                           ),
                           Text(
-                            effective.nszThreadCount == 0 ? 'Auto' : '${effective.nszThreadCount}',
+                            effective.nszThreadCount == 0 ? loc.zstdThreadsDefault : '${effective.nszThreadCount}',
                             style: Theme.of(context).textTheme.titleMedium,
                           ),
                           IconButton(
@@ -507,8 +507,8 @@ class SettingsScreen extends StatelessWidget {
                   _lockable(
                     locked: tuningLocked,
                     child: ListTile(
-                      title: const Text('I/O Chunk Size'),
-                      subtitle: Text('${effective.nszChunkSizeMB} MB'),
+                      title: Text(loc.ioChunkSize),
+                      subtitle: Text(loc.ioChunkSizeUnit(effective.nszChunkSizeMB)),
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -539,8 +539,8 @@ class SettingsScreen extends StatelessWidget {
                   _lockable(
                     locked: tuningLocked,
                     child: ListTile(
-                      title: const Text('Parallel NCA Compression'),
-                      subtitle: const Text('Compress multiple NCAs in parallel using isolates'),
+                      title: Text(loc.parallelNca),
+                      subtitle: Text(loc.parallelNcaDesc),
                       trailing: Switch(
                         value: effective.nszParallel,
                         onChanged: (val) =>
@@ -549,23 +549,23 @@ class SettingsScreen extends StatelessWidget {
                     ),
                   ),
                   ListTile(
-                    title: const Text('NSZ Performance Benchmark'),
-                    subtitle: const Text('Test and compare NSZ compression settings'),
+                    title: Text(loc.nszBenchmark),
+                    subtitle: Text(loc.nszBenchmarkDesc),
                     trailing: const Icon(Icons.speed),
                     onTap: () => context.push('/nsz_benchmark'),
                   ),
                   const Divider(height: 32),
-                  const Padding(
-                    padding: EdgeInsets.fromLTRB(16, 16, 16, 4),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 16, 16, 4),
                     child: Text(
-                      'System & About',
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                      loc.headingSystem,
+                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                     ),
                   ),
                   if (Platform.isAndroid) const _StoragePermissionTile(),
                   ListTile(
-                    title: const Text('Export App Logs'),
-                    subtitle: const Text('Export logs to help debug issues'),
+                    title: Text(loc.exportLogs),
+                    subtitle: Text(loc.exportLogsDesc),
                     trailing: const Icon(Icons.download),
                     onTap: () async {
                       final path = await LoggerService.instance.getLogFilePath();
@@ -574,7 +574,7 @@ class SettingsScreen extends StatelessWidget {
                         if (context.mounted) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: Text('Logs exported from $path'),
+                              content: Text(loc.logsExported(path)),
                               duration: const Duration(seconds: 5),
                             ),
                           );
@@ -582,9 +582,9 @@ class SettingsScreen extends StatelessWidget {
                       } else {
                         if (context.mounted) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('No logs available yet'),
-                              duration: Duration(seconds: 5),
+                            SnackBar(
+                              content: Text(loc.noLogsYet),
+                              duration: const Duration(seconds: 5),
                             ),
                           );
                         }
@@ -608,8 +608,8 @@ class SettingsScreen extends StatelessWidget {
                     },
                   ),
                   ListTile(
-                    title: const Text('Credits & Acknowledgments'),
-                    subtitle: const Text('View open source licenses'),
+                    title: Text(loc.credits),
+                    subtitle: Text(loc.creditsSubtitle),
                     trailing: const Icon(Icons.info_outline),
                     onTap: () => _showCreditsDialog(context),
                   ),
@@ -710,6 +710,32 @@ class SettingsScreen extends StatelessWidget {
     }
   }
 
+  String _presetLabel(PerformancePreset preset, AppLocalizations loc) {
+    switch (preset) {
+      case PerformancePreset.weak:
+        return loc.presetWeak;
+      case PerformancePreset.mid:
+        return loc.presetBalanced;
+      case PerformancePreset.high:
+        return loc.presetHigh;
+      case PerformancePreset.custom:
+        return loc.presetCustom;
+    }
+  }
+
+  String _presetDesc(PerformancePreset preset, AppLocalizations loc) {
+    switch (preset) {
+      case PerformancePreset.weak:
+        return loc.presetWeakDesc;
+      case PerformancePreset.mid:
+        return loc.presetBalancedDesc;
+      case PerformancePreset.high:
+        return loc.presetHighDesc;
+      case PerformancePreset.custom:
+        return loc.presetCustomDesc;
+    }
+  }
+
   Future<void> _editChdCodecs(
     BuildContext context,
     SettingsCubit cubit,
@@ -744,10 +770,11 @@ class SettingsScreen extends StatelessWidget {
   }
 
   void _showCreditsDialog(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Credits & Acknowledgments'),
+        title: Text(loc.credits),
         content: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -796,7 +823,7 @@ class SettingsScreen extends StatelessWidget {
             ],
           ),
         ),
-        actions: [TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Close'))],
+        actions: [TextButton(onPressed: () => Navigator.pop(ctx), child: Text(loc.close))],
       ),
     );
   }
@@ -899,18 +926,19 @@ class _StoragePermissionTileState extends State<_StoragePermissionTile>
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     return ListTile(
-      title: const Text('All-files storage access'),
+      title: Text(loc.allFilesAccess),
       subtitle: Text(
         _granted
-            ? 'Granted — the app can read and write ROMs anywhere on the device.'
-            : 'Required to read and write ROMs outside the app folder.',
+            ? loc.allFilesGranted
+            : loc.allFilesRequired,
       ),
       trailing: FilledButton.icon(
         // Disabled once granted (and while the initial status check runs).
         onPressed: _granted || _checking ? null : _requestPermission,
         icon: Icon(_granted ? Icons.check_circle : Icons.folder_special),
-        label: Text(_granted ? 'Granted' : 'Grant'),
+        label: Text(_granted ? loc.granted : loc.grant),
       ),
     );
   }
