@@ -322,7 +322,7 @@
   "bmLog": "日志",
   "bmCopy": "复制",
   "bmLogCopied": "日志已复制到剪贴板",
-  "bmTerminalIdle": "终端空闲。请按"开始基准测试"。",
+  "bmTerminalIdle": "终端空闲。请按「开始基准测试」。",
   "bmHistory": "基准测试历史",
   "bmHistoryClear": "清除",
   "bmSavingsPercent": "节省 {percent}%",
