@@ -677,7 +677,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String bmSavingsPercent(num percent) {
-    return '节省 $percent%';
+    return '节省 ${percent.toStringAsFixed(1)}%';
   }
 
   @override

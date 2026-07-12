@@ -275,7 +275,7 @@ class _NszBenchmarkScreenState extends State<NszBenchmarkScreen> {
               final remainingSec = remaining / bytesPerSec;
               if (remainingSec > 0) {
                 if (mounted) {
-                  eta = AppLocalizations.of(context)!.bmEtaRemaining(remainingSec.toStringAsFixed(0));
+                  eta = AppLocalizations.of(context)!.bmEtaRemaining(remainingSec.round());
                 } else {
                   eta = '${remainingSec.toStringAsFixed(0)}s remaining';
                 }
@@ -561,7 +561,7 @@ Generated on: ${DateTime.now().toLocal().toString().split('.').first}
                     title: Row(
                       children: [
                         Text(
-                          loc.bmSavingsPercent(result.savingsPercent.toStringAsFixed(1)),
+                          loc.bmSavingsPercent(result.savingsPercent),
                           style: theme.textTheme.titleSmall?.copyWith(
                             color: context.semantic.success,
                             fontWeight: FontWeight.bold,
@@ -569,7 +569,7 @@ Generated on: ${DateTime.now().toLocal().toString().split('.').first}
                         ),
                         const SizedBox(width: 8),
                         Text(
-                          loc.bmDurationIn(result.durationSeconds.toStringAsFixed(1)),
+                          loc.bmDurationIn(result.durationSeconds.round()),
                           style: theme.textTheme.titleSmall?.copyWith(
                             fontWeight: FontWeight.bold,
                           ),
