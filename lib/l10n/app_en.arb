@@ -314,5 +314,157 @@
   "allFilesGranted": "Granted — the app can read and write ROMs anywhere on the device.",
   "allFilesRequired": "Required to read and write ROMs outside the app folder.",
   "granted": "Granted",
-  "grant": "Grant"
+  "grant": "Grant",
+  "bmTitle": "NSZ Performance Benchmark",
+  "bmSetupFiles": "1. Setup Files",
+  "bmInputNsp": "Input NSP File",
+  "bmInputNspHint": "Select an NSP game file to compress",
+  "bmKeysFile": "prod.keys File",
+  "bmKeysFileHint": "Select prod.keys keys file",
+  "bmConfigureParams": "2. Configure Parameters",
+  "bmReset": "Reset",
+  "bmZstdThreads": "Zstandard Threads",
+  "bmZstdDefault": "Default (cores - 2)",
+  "bmZstdAuto": "Auto",
+  "bmIoChunkSize": "I/O Chunk Size",
+  "bmParallelNca": "Parallel NCA Compression",
+  "bmParallelNcaDesc": "Compress multiple NCAs in parallel background isolates",
+  "bmStartBenchmark": "Start Benchmark",
+  "bmCancelBenchmark": "Cancel Benchmark",
+  "bmStatusIdle": "Idle",
+  "bmStatusInitializing": "Initializing...",
+  "bmStatusCompleted": "Completed successfully!",
+  "bmStatusFailed": "Failed",
+  "bmStatusCancelled": "Cancelled",
+  "bmResults": "Benchmark Results",
+  "bmCopyReport": "Copy Report",
+  "bmReportCopied": "Benchmark report copied to clipboard",
+  "bmTotalTime": "Total Time",
+  "bmOriginalSize": "Original Size",
+  "bmCompressedSize": "Compressed Size",
+  "bmSavingsRatio": "Savings Ratio",
+  "bmLog": "Log",
+  "bmCopy": "Copy",
+  "bmLogCopied": "Log copied to clipboard",
+  "bmTerminalIdle": "Terminal idle. Press Start Benchmark.",
+  "bmHistory": "Benchmark History",
+  "bmHistoryClear": "Clear",
+  "bmSavingsPercent": "{percent}% savings",
+  "@bmSavingsPercent": {
+    "placeholders": {
+      "percent": {
+        "type": "num"
+      }
+    }
+  },
+  "bmDurationIn": "in {seconds}s",
+  "@bmDurationIn": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "bmConfigLine": "Config: {config}",
+  "@bmConfigLine": {
+    "placeholders": {
+      "config": {
+        "type": "String"
+      }
+    }
+  },
+  "bmParallel": "Parallel",
+  "bmSequential": "Sequential",
+  "bmReuseSettings": "Reuse settings from this run",
+  "bmSystemInfo": "System: {os} ({version}) \u2022 {cores} CPU Cores",
+  "@bmSystemInfo": {
+    "placeholders": {
+      "os": {
+        "type": "String"
+      },
+      "version": {
+        "type": "String"
+      },
+      "cores": {
+        "type": "int"
+      }
+    }
+  },
+  "bmEtaRemaining": "{seconds}s remaining",
+  "@bmEtaRemaining": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "bmStatusPrefix": "Status: {status}",
+  "@bmStatusPrefix": {
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "bmSelectBothFiles": "Please select both input file and keys file.",
+  "bmDropFiles": "Drop .nsp or .keys files here",
+  "fpSelectStorage": "Select Storage",
+  "fpInternalStorage": "Internal Storage",
+  "fpRemovableStorage": "Removable Storage ({id})",
+  "@fpRemovableStorage": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "fpGoUp": "Go up",
+  "fpNoStorageVolumes": "No storage volumes found.",
+  "fpNoMatchingFiles": "No {ext} files in this folder.",
+  "@fpNoMatchingFiles": {
+    "placeholders": {
+      "ext": {
+        "type": "String"
+      }
+    }
+  },
+  "fpFolderEmpty": "This folder is empty.",
+  "fpSelectFolder": "Select this folder",
+  "fpSelectCount": "Select ({count})",
+  "@fpSelectCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "fpPermissionDenied": "Permission denied \u2014 cannot read this folder.",
+  "fpCouldNotOpen": "Could not open folder: {error}",
+  "@fpCouldNotOpen": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "fpSelectAll": "Select All",
+  "fpDeselectAll": "Deselect All",
+  "version": "Version {version}",
+  "@version": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "errUnknown": "Unknown error",
+  "errKeysNotFound": "prod.keys file not found at \"{path}\".",
+  "@errKeysNotFound": {
+    "placeholders": {
+      "path": {
+        "type": "String"
+      }
+    }
+  },
+  "errBatchCancelled": "Cancelled"
 }

@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
+import '../l10n/app_localizations.dart';
 
 enum AndroidPickerMode { file, files, directory }
 
@@ -218,14 +219,14 @@ class _AndroidFilePickerState extends State<AndroidFilePicker> {
       setState(() {
         _entities = [];
         _isLoading = false;
-        _errorMessage = 'Permission denied — cannot read this folder.';
+        _errorMessage = AppLocalizations.of(context)!.fpPermissionDenied;
       });
     } catch (e) {
       if (!mounted) return;
       setState(() {
         _entities = [];
         _isLoading = false;
-        _errorMessage = 'Could not open folder: $e';
+        _errorMessage = AppLocalizations.of(context)!.fpCouldNotOpen(e.toString());
       });
     }
   }
@@ -233,11 +234,23 @@ class _AndroidFilePickerState extends State<AndroidFilePicker> {
   // ── Helpers ─────────────────────────────────────────────────────────────────
 
   String _buildTitle() {
-    if (_currentDirectory == null) return 'Select Storage';
+    if (_currentDirectory == null) {
+      final loc = AppLocalizations.of(context);
+      return loc != null ? loc.fpSelectStorage : 'Select Storage';
+    }
     final path = _currentDirectory!.path;
     final matchedRoot =
         _storageRoots.where((r) => r.path == path).firstOrNull;
-    if (matchedRoot != null) return matchedRoot.label;
+    if (matchedRoot != null) {
+      final loc = AppLocalizations.of(context);
+      if (loc != null) {
+        return matchedRoot.path == '/storage/emulated/0'
+            ? loc.fpInternalStorage
+            : loc.fpRemovableStorage(
+                matchedRoot.path.replaceFirst('/storage/', ''));
+      }
+      return matchedRoot.label;
+    }
     return p.basename(path);
   }
 
@@ -275,7 +288,9 @@ class _AndroidFilePickerState extends State<AndroidFilePicker> {
     return [
       IconButton(
         icon: Icon(allSelected ? Icons.deselect : Icons.select_all),
-        tooltip: allSelected ? 'Deselect All' : 'Select All',
+        tooltip: allSelected
+            ? AppLocalizations.of(context)!.fpDeselectAll
+            : AppLocalizations.of(context)!.fpSelectAll,
         onPressed: () {
           setState(() {
             if (allSelected) {
@@ -309,7 +324,7 @@ class _AndroidFilePickerState extends State<AndroidFilePicker> {
           title: Text(_buildTitle()),
           leading: IconButton(
             icon: const Icon(Icons.arrow_upward),
-            tooltip: 'Go up',
+            tooltip: AppLocalizations.of(context)!.fpGoUp,
             onPressed: _isLoading ? null : _navigateUp,
           ),
           actions: _buildActions(),
@@ -321,6 +336,7 @@ class _AndroidFilePickerState extends State<AndroidFilePicker> {
   }
 
   Widget _buildBody() {
+    final loc = AppLocalizations.of(context)!;
     if (_isLoading) {
       return const Center(child: CircularProgressIndicator());
     }
@@ -328,11 +344,11 @@ class _AndroidFilePickerState extends State<AndroidFilePicker> {
     // ── Storage roots overview ────────────────────────────────────────────────
     if (_currentDirectory == null) {
       if (_storageRoots.isEmpty) {
-        return const Center(
+        return Center(
           child: Padding(
             padding: EdgeInsets.all(24),
             child: Text(
-              'No storage volumes found.',
+              loc.fpNoStorageVolumes,
               textAlign: TextAlign.center,
             ),
           ),
@@ -343,7 +359,10 @@ class _AndroidFilePickerState extends State<AndroidFilePicker> {
           for (final root in _storageRoots)
             ListTile(
               leading: const Icon(Icons.storage),
-              title: Text(root.label),
+              title: Text(root.path == '/storage/emulated/0'
+                  ? loc.fpInternalStorage
+                  : loc.fpRemovableStorage(
+                      root.path.replaceFirst('/storage/', ''))),
               subtitle: Text(root.path),
               onTap: () => _enterDirectory(Directory(root.path)),
             ),
@@ -387,8 +406,8 @@ class _AndroidFilePickerState extends State<AndroidFilePicker> {
               const SizedBox(height: 12),
               Text(
                 widget.allowedExtensions.isNotEmpty
-                    ? 'No ${widget.allowedExtensions.join(' / ').toUpperCase()} files in this folder.'
-                    : 'This folder is empty.',
+                    ? loc.fpNoMatchingFiles(widget.allowedExtensions.join(' / ').toUpperCase())
+                    : loc.fpFolderEmpty,
                 textAlign: TextAlign.center,
                 style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant),
               ),
@@ -445,13 +464,14 @@ class _AndroidFilePickerState extends State<AndroidFilePicker> {
   }
 
   Widget? _buildFab() {
+    final loc = AppLocalizations.of(context)!;
     if (widget.mode == AndroidPickerMode.directory &&
         _currentDirectory != null) {
       return FloatingActionButton.extended(
         onPressed: () =>
             Navigator.of(context).pop(_currentDirectory!.path),
         icon: const Icon(Icons.check),
-        label: const Text('Select this folder'),
+        label: Text(loc.fpSelectFolder),
       );
     }
     if (widget.mode == AndroidPickerMode.files &&
@@ -460,7 +480,7 @@ class _AndroidFilePickerState extends State<AndroidFilePicker> {
         onPressed: () =>
             Navigator.of(context).pop(_selectedFiles.toList()),
         icon: const Icon(Icons.check),
-        label: Text('Select (${_selectedFiles.length})'),
+        label: Text(loc.fpSelectCount(_selectedFiles.length)),
       );
     }
     return null;

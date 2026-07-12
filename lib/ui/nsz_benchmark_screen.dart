@@ -14,6 +14,7 @@ import '../settings/settings_cubit.dart';
 import '../services/file_service.dart';
 import '../switch/keys.dart';
 import '../switch/nsz_archive.dart';
+import '../l10n/app_localizations.dart';
 import 'android_file_picker.dart';
 
 class _BenchmarkParams {
@@ -78,7 +79,7 @@ class _NszBenchmarkScreenState extends State<NszBenchmarkScreen> {
 
   bool _isRunning = false;
   double _progress = 0.0;
-  String _statusMessage = 'Idle';
+  String _statusMessage = '';
   final List<String> _logs = [];
 
   // Results
@@ -212,12 +213,13 @@ class _NszBenchmarkScreenState extends State<NszBenchmarkScreen> {
   }
 
   Future<void> _startBenchmark() async {
+    final loc = AppLocalizations.of(context)!;
     if (_inputPath.isEmpty || _keysPath.isEmpty) {
       final scheme = Theme.of(context).colorScheme;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: SelectableText(
-            'Please select both input file and keys file.',
+            loc.bmSelectBothFiles,
             style: TextStyle(color: scheme.onError),
           ),
           backgroundColor: scheme.error,
@@ -231,7 +233,7 @@ class _NszBenchmarkScreenState extends State<NszBenchmarkScreen> {
     setState(() {
       _isRunning = true;
       _progress = 0.0;
-      _statusMessage = 'Initializing...';
+      _statusMessage = loc.bmStatusInitializing;
       _logs.clear();
       _elapsed = null;
       _inputSize = inSize;
@@ -272,7 +274,11 @@ class _NszBenchmarkScreenState extends State<NszBenchmarkScreen> {
               final remaining = _inputSize! * (1.0 - frac);
               final remainingSec = remaining / bytesPerSec;
               if (remainingSec > 0) {
-                eta = '${remainingSec.toStringAsFixed(0)}s remaining';
+                if (mounted) {
+                  eta = AppLocalizations.of(context)!.bmEtaRemaining(remainingSec.toStringAsFixed(0));
+                } else {
+                  eta = '${remainingSec.toStringAsFixed(0)}s remaining';
+                }
               }
             }
           }
@@ -312,6 +318,7 @@ class _NszBenchmarkScreenState extends State<NszBenchmarkScreen> {
   }
 
   void _onSuccess() {
+    final loc = AppLocalizations.of(context)!;
     _stopwatch?.stop();
     final elapsed = _stopwatch?.elapsed ?? Duration.zero;
 
@@ -321,7 +328,7 @@ class _NszBenchmarkScreenState extends State<NszBenchmarkScreen> {
     setState(() {
       _isRunning = false;
       _progress = 1.0;
-      _statusMessage = 'Completed successfully!';
+      _statusMessage = loc.bmStatusCompleted;
       _elapsed = elapsed;
       _inputSize = inSize;
       _outputSize = outSize;
@@ -359,7 +366,11 @@ class _NszBenchmarkScreenState extends State<NszBenchmarkScreen> {
     _stopwatch?.stop();
     setState(() {
       _isRunning = false;
-      _statusMessage = 'Failed';
+      if (mounted) {
+        _statusMessage = AppLocalizations.of(context)!.bmStatusFailed;
+      } else {
+        _statusMessage = 'Failed';
+      }
     });
     _log('ERROR: $error');
     _cleanup();
@@ -369,7 +380,11 @@ class _NszBenchmarkScreenState extends State<NszBenchmarkScreen> {
     _stopwatch?.stop();
     setState(() {
       _isRunning = false;
-      _statusMessage = 'Cancelled';
+      if (mounted) {
+        _statusMessage = AppLocalizations.of(context)!.bmStatusCancelled;
+      } else {
+        _statusMessage = 'Cancelled';
+      }
     });
     _log('Benchmark run cancelled by user.');
     _cleanup();
@@ -449,9 +464,10 @@ Generated on: ${DateTime.now().toLocal().toString().split('.').first}
 
     await Clipboard.setData(ClipboardData(text: report.trim()));
     if (mounted) {
+      final loc = AppLocalizations.of(context)!;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Benchmark report copied to clipboard'),
+        SnackBar(
+          content: Text(loc.bmReportCopied),
           duration: Duration(seconds: 5),
         ),
       );
@@ -460,6 +476,7 @@ Generated on: ${DateTime.now().toLocal().toString().split('.').first}
 
   Widget _buildSystemSpecsHeader(BuildContext context) {
     final theme = Theme.of(context);
+    final loc = AppLocalizations.of(context)!;
     final os = Platform.operatingSystem;
     final osVersion = Platform.operatingSystemVersion;
     final cores = Platform.numberOfProcessors;
@@ -486,7 +503,7 @@ Generated on: ${DateTime.now().toLocal().toString().split('.').first}
               const SizedBox(width: 12),
               Expanded(
                 child: Text(
-                  'System: $osName ($osVersion) • $cores CPU Cores',
+                  loc.bmSystemInfo(osName, osVersion, cores),
                   style: theme.textTheme.bodyMedium?.copyWith(
                     color: theme.colorScheme.onSurfaceVariant,
                     fontWeight: FontWeight.w500,
@@ -502,6 +519,7 @@ Generated on: ${DateTime.now().toLocal().toString().split('.').first}
 
   Widget _buildHistoryCard(BuildContext context) {
     final theme = Theme.of(context);
+    final loc = AppLocalizations.of(context)!;
     if (_history.isEmpty) return const SizedBox.shrink();
 
     return Padding(
@@ -516,10 +534,10 @@ Generated on: ${DateTime.now().toLocal().toString().split('.').first}
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Benchmark History', style: theme.textTheme.titleMedium),
+                  Text(loc.bmHistory, style: theme.textTheme.titleMedium),
                   TextButton.icon(
                     icon: const Icon(Icons.delete_sweep_outlined, size: 18),
-                    label: const Text('Clear'),
+                    label: Text(loc.bmReset),
                     onPressed: _isRunning ? null : _clearHistory,
                   ),
                 ],
@@ -534,7 +552,7 @@ Generated on: ${DateTime.now().toLocal().toString().split('.').first}
                   final result = _history[index];
                   final timeStr = result.timestamp.toLocal().toString().split(' ').first;
                   final timeOfDay = result.timestamp.toLocal().toString().split(' ')[1].substring(0, 5);
-                  final isParallel = result.nszParallel ? 'Parallel' : 'Sequential';
+                  final isParallel = result.nszParallel ? loc.bmParallel : loc.bmSequential;
                   final threadStr = result.threadCount == 0 ? 'Auto' : '${result.threadCount}T';
                   final chunkStr = '${result.chunkSizeMB}MB';
 
@@ -543,7 +561,7 @@ Generated on: ${DateTime.now().toLocal().toString().split('.').first}
                     title: Row(
                       children: [
                         Text(
-                          '${result.savingsPercent.toStringAsFixed(1)}% savings',
+                          loc.bmSavingsPercent(result.savingsPercent.toStringAsFixed(1)),
                           style: theme.textTheme.titleSmall?.copyWith(
                             color: context.semantic.success,
                             fontWeight: FontWeight.bold,
@@ -551,7 +569,7 @@ Generated on: ${DateTime.now().toLocal().toString().split('.').first}
                         ),
                         const SizedBox(width: 8),
                         Text(
-                          'in ${result.durationSeconds.toStringAsFixed(1)}s',
+                          loc.bmDurationIn(result.durationSeconds.toStringAsFixed(1)),
                           style: theme.textTheme.titleSmall?.copyWith(
                             fontWeight: FontWeight.bold,
                           ),
@@ -561,7 +579,7 @@ Generated on: ${DateTime.now().toLocal().toString().split('.').first}
                     subtitle: Padding(
                       padding: const EdgeInsets.only(top: 4.0),
                       child: Text(
-                        'Config: $threadStr • $chunkStr • $isParallel • $timeStr $timeOfDay',
+                        loc.bmConfigLine('$threadStr • $chunkStr • $isParallel • $timeStr $timeOfDay'),
                         style: theme.textTheme.bodySmall,
                       ),
                     ),
@@ -569,7 +587,7 @@ Generated on: ${DateTime.now().toLocal().toString().split('.').first}
                         ? null
                         : IconButton(
                             icon: const Icon(Icons.settings_backup_restore),
-                            tooltip: 'Reuse settings from this run',
+                            tooltip: loc.bmReuseSettings,
                             onPressed: () {
                               _updateThreadCount(result.threadCount);
                               _updateChunkSize(result.chunkSizeMB);
@@ -590,11 +608,12 @@ Generated on: ${DateTime.now().toLocal().toString().split('.').first}
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final loc = AppLocalizations.of(context)!;
     final isDesktop = MediaQuery.of(context).size.width >= 600;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('NSZ Performance Benchmark'),
+        title: Text(loc.bmTitle),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: _isRunning ? null : () => context.pop(),
@@ -610,7 +629,7 @@ Generated on: ${DateTime.now().toLocal().toString().split('.').first}
 
               // Setup Card wrapped in DragDropTarget
               DragDropTarget(
-                hintText: 'Drop .nsp or .keys files here',
+                hintText: loc.bmDropFiles,
                 onFilesDropped: _handleDroppedFiles,
                 child: Card(
                   elevation: 1,
@@ -619,15 +638,15 @@ Generated on: ${DateTime.now().toLocal().toString().split('.').first}
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('1. Setup Files', style: theme.textTheme.titleMedium),
+                        Text(loc.bmSetupFiles, style: theme.textTheme.titleMedium),
                         const SizedBox(height: 12),
                         ListTile(
                           contentPadding: EdgeInsets.zero,
-                          title: const Text('Input NSP File'),
-                          subtitle: Text(_inputPath.isEmpty ? 'Select an NSP game file to compress' : _inputPath),
+                          title: Text(loc.bmInputNsp),
+                          subtitle: Text(_inputPath.isEmpty ? loc.bmInputNspHint : _inputPath),
                           trailing: FilledButton.icon(
                             icon: const Icon(Icons.folder_open),
-                            label: const Text('Browse'),
+                            label: Text(loc.btnBrowse),
                             onPressed: _isRunning
                                 ? null
                                 : () async {
@@ -646,11 +665,11 @@ Generated on: ${DateTime.now().toLocal().toString().split('.').first}
                         const Divider(),
                         ListTile(
                           contentPadding: EdgeInsets.zero,
-                          title: const Text('prod.keys File'),
-                          subtitle: Text(_keysPath.isEmpty ? 'Select prod.keys keys file' : _keysPath),
+                          title: Text(loc.bmKeysFile),
+                          subtitle: Text(_keysPath.isEmpty ? loc.bmKeysFileHint : _keysPath),
                           trailing: FilledButton.icon(
                             icon: const Icon(Icons.key),
-                            label: const Text('Browse'),
+                            label: Text(loc.btnBrowse),
                             onPressed: _isRunning
                                 ? null
                                 : () async {
@@ -684,11 +703,11 @@ Generated on: ${DateTime.now().toLocal().toString().split('.').first}
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('2. Configure Parameters', style: theme.textTheme.titleMedium),
+                          Text(loc.bmConfigureParams, style: theme.textTheme.titleMedium),
                           if (!_isRunning)
                             TextButton.icon(
                               icon: const Icon(Icons.settings_backup_restore, size: 18),
-                              label: const Text('Reset'),
+                              label: Text(loc.bmReset),
                               onPressed: () {
                                 _updateThreadCount(1);
                                 _updateChunkSize(2);
@@ -701,8 +720,8 @@ Generated on: ${DateTime.now().toLocal().toString().split('.').first}
                       const SizedBox(height: 12),
                       ListTile(
                         contentPadding: EdgeInsets.zero,
-                        title: const Text('Zstandard Threads'),
-                        subtitle: Text(_threadCount == 0 ? 'Default (cores - 2)' : '$_threadCount thread(s)'),
+                        title: Text(loc.bmZstdThreads),
+                        subtitle: Text(_threadCount == 0 ? loc.bmZstdDefault : loc.threadCount(_threadCount)),
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -713,7 +732,7 @@ Generated on: ${DateTime.now().toLocal().toString().split('.').first}
                                   : () => _updateThreadCount(_threadCount - 1),
                             ),
                             Text(
-                              _threadCount == 0 ? 'Auto' : '$_threadCount',
+                              _threadCount == 0 ? loc.bmZstdAuto : '$_threadCount',
                               style: theme.textTheme.titleMedium,
                             ),
                             IconButton(
@@ -728,8 +747,8 @@ Generated on: ${DateTime.now().toLocal().toString().split('.').first}
                       const Divider(),
                       ListTile(
                         contentPadding: EdgeInsets.zero,
-                        title: const Text('I/O Chunk Size'),
-                        subtitle: Text('$_chunkSizeMB MB'),
+                        title: Text(loc.bmIoChunkSize),
+                        subtitle: Text(loc.ioChunkSizeUnit(_chunkSizeMB)),
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -755,8 +774,8 @@ Generated on: ${DateTime.now().toLocal().toString().split('.').first}
                       const Divider(),
                       SwitchListTile(
                         contentPadding: EdgeInsets.zero,
-                        title: const Text('Parallel NCA Compression'),
-                        subtitle: const Text('Compress multiple NCAs in parallel background isolates'),
+                        title: Text(loc.bmParallelNca),
+                        subtitle: Text(loc.bmParallelNcaDesc),
                         value: _nszParallel,
                         onChanged: _isRunning
                             ? null
@@ -775,13 +794,13 @@ Generated on: ${DateTime.now().toLocal().toString().split('.').first}
                   if (!_isRunning)
                     FilledButton.icon(
                       icon: const Icon(Icons.play_arrow),
-                      label: const Text('Start Benchmark'),
+                      label: Text(loc.bmStartBenchmark),
                       onPressed: _startBenchmark,
                     )
                   else
                     FilledButton.icon(
                       icon: const Icon(Icons.stop),
-                      label: const Text('Cancel Benchmark'),
+                      label: Text(loc.bmCancelBenchmark),
                       style: FilledButton.styleFrom(
                         backgroundColor: Theme.of(context).colorScheme.error,
                         foregroundColor: Theme.of(context).colorScheme.onError,
@@ -799,7 +818,7 @@ Generated on: ${DateTime.now().toLocal().toString().split('.').first}
                   children: [
                     Expanded(
                       child: Text(
-                        'Status: $_statusMessage',
+                        loc.bmStatusPrefix(_statusMessage.isEmpty ? loc.bmStatusIdle : _statusMessage),
                         style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
                       ),
                     ),
@@ -836,7 +855,7 @@ Generated on: ${DateTime.now().toLocal().toString().split('.').first}
                                 Icon(Icons.analytics, color: context.semantic.success),
                                 const SizedBox(width: 8),
                                 Text(
-                                  'Benchmark Results',
+                                  loc.bmResults,
                                   style: theme.textTheme.titleMedium?.copyWith(
                                     color: theme.colorScheme.onPrimaryContainer,
                                     fontWeight: FontWeight.bold,
@@ -846,7 +865,7 @@ Generated on: ${DateTime.now().toLocal().toString().split('.').first}
                             ),
                             TextButton.icon(
                               icon: const Icon(Icons.share, size: 16),
-                              label: const Text('Copy Report'),
+                              label: Text(loc.bmCopyReport),
                               onPressed: _copyMarkdownReport,
                               style: TextButton.styleFrom(
                                 foregroundColor: theme.colorScheme.onPrimaryContainer,
@@ -864,25 +883,25 @@ Generated on: ${DateTime.now().toLocal().toString().split('.').first}
                               children: [
                                 _buildResultItem(
                                   context: context,
-                                  label: 'Total Time',
+                                  label: loc.bmTotalTime,
                                   value: '${(_elapsed!.inMilliseconds / 1000).toStringAsFixed(2)}s',
                                   width: columnWidth,
                                 ),
                                 _buildResultItem(
                                   context: context,
-                                  label: 'Original Size',
+                                  label: loc.bmOriginalSize,
                                   value: '${(_inputSize! / 1024 / 1024).toStringAsFixed(2)} MB',
                                   width: columnWidth,
                                 ),
                                 _buildResultItem(
                                   context: context,
-                                  label: 'Compressed Size',
+                                  label: loc.bmCompressedSize,
                                   value: '${(_outputSize! / 1024 / 1024).toStringAsFixed(2)} MB',
                                   width: columnWidth,
                                 ),
                                 _buildResultItem(
                                   context: context,
-                                  label: 'Savings Ratio',
+                                  label: loc.bmSavingsRatio,
                                   value: '${((1 - _outputSize! / _inputSize!) * 100).toStringAsFixed(2)}%',
                                   width: columnWidth,
                                 ),
@@ -908,20 +927,20 @@ Generated on: ${DateTime.now().toLocal().toString().split('.').first}
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Log', style: theme.textTheme.titleMedium),
+                          Text(loc.bmLog, style: theme.textTheme.titleMedium),
                           Row(
                             children: [
                               if (_logs.isNotEmpty) ...[
                                 TextButton.icon(
                                   icon: const Icon(Icons.copy, size: 16),
-                                  label: const Text('Copy'),
+                                  label: Text(loc.bmCopy),
                                   onPressed: () async {
                                     final logText = _logs.join('\n');
                                     await Clipboard.setData(ClipboardData(text: logText));
                                     if (context.mounted) {
                                       ScaffoldMessenger.of(context).showSnackBar(
-                                        const SnackBar(
-                                          content: Text('Log copied to clipboard'),
+                                        SnackBar(
+                                          content: Text(loc.bmLogCopied),
                                           duration: Duration(seconds: 5),
                                         ),
                                       );
@@ -931,7 +950,7 @@ Generated on: ${DateTime.now().toLocal().toString().split('.').first}
                                 const SizedBox(width: 8),
                                 TextButton.icon(
                                   icon: const Icon(Icons.clear, size: 16),
-                                  label: const Text('Clear'),
+                                  label: Text(loc.bmReset),
                                   onPressed: () => setState(() => _logs.clear()),
                                 ),
                               ],
@@ -949,9 +968,9 @@ Generated on: ${DateTime.now().toLocal().toString().split('.').first}
                         ),
                         padding: const EdgeInsets.all(12),
                         child: _logs.isEmpty
-                            ? const Center(
+                            ? Center(
                                 child: Text(
-                                  'Terminal idle. Press Start Benchmark.',
+                                  loc.bmTerminalIdle,
                                   style: TextStyle(color: Colors.grey, fontFamily: 'monospace'),
                                 ),
                               )

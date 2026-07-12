@@ -572,4 +572,214 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get grant => '授权';
+
+  @override
+  String get bmTitle => 'NSZ 性能基准测试';
+
+  @override
+  String get bmSetupFiles => '1. 设置文件';
+
+  @override
+  String get bmInputNsp => '输入 NSP 文件';
+
+  @override
+  String get bmInputNspHint => '选择要压缩的 NSP 游戏文件';
+
+  @override
+  String get bmKeysFile => 'prod.keys 文件';
+
+  @override
+  String get bmKeysFileHint => '选择 prod.keys 密钥文件';
+
+  @override
+  String get bmConfigureParams => '2. 配置参数';
+
+  @override
+  String get bmReset => '重置';
+
+  @override
+  String get bmZstdThreads => 'Zstandard 线程数';
+
+  @override
+  String get bmZstdDefault => '默认（核心数 - 2）';
+
+  @override
+  String get bmZstdAuto => '自动';
+
+  @override
+  String get bmIoChunkSize => 'I/O 块大小';
+
+  @override
+  String get bmParallelNca => '并行 NCA 压缩';
+
+  @override
+  String get bmParallelNcaDesc => '在并行后台隔离区中压缩多个 NCA';
+
+  @override
+  String get bmStartBenchmark => '开始基准测试';
+
+  @override
+  String get bmCancelBenchmark => '取消基准测试';
+
+  @override
+  String get bmStatusIdle => '空闲';
+
+  @override
+  String get bmStatusInitializing => '初始化中...';
+
+  @override
+  String get bmStatusCompleted => '已完成！';
+
+  @override
+  String get bmStatusFailed => '失败';
+
+  @override
+  String get bmStatusCancelled => '已取消';
+
+  @override
+  String get bmResults => '基准测试结果';
+
+  @override
+  String get bmCopyReport => '复制报告';
+
+  @override
+  String get bmReportCopied => '基准测试报告已复制到剪贴板';
+
+  @override
+  String get bmTotalTime => '总用时';
+
+  @override
+  String get bmOriginalSize => '原始大小';
+
+  @override
+  String get bmCompressedSize => '压缩后大小';
+
+  @override
+  String get bmSavingsRatio => '节省比例';
+
+  @override
+  String get bmLog => '日志';
+
+  @override
+  String get bmCopy => '复制';
+
+  @override
+  String get bmLogCopied => '日志已复制到剪贴板';
+
+  @override
+  String get bmTerminalIdle => '终端空闲。请按"开始基准测试"。';
+
+  @override
+  String get bmHistory => '基准测试历史';
+
+  @override
+  String get bmHistoryClear => '清除';
+
+  @override
+  String bmSavingsPercent(num percent) {
+    return '节省 $percent%';
+  }
+
+  @override
+  String bmDurationIn(int seconds) {
+    return '用时 $seconds 秒';
+  }
+
+  @override
+  String bmConfigLine(String config) {
+    return '配置：$config';
+  }
+
+  @override
+  String get bmParallel => '并行';
+
+  @override
+  String get bmSequential => '顺序';
+
+  @override
+  String get bmReuseSettings => '复用此次运行的设置';
+
+  @override
+  String bmSystemInfo(String os, String version, int cores) {
+    return '系统：$os ($version) \u2022 $cores 个 CPU 核心';
+  }
+
+  @override
+  String bmEtaRemaining(int seconds) {
+    return '剩余 $seconds 秒';
+  }
+
+  @override
+  String bmStatusPrefix(String status) {
+    return '状态：$status';
+  }
+
+  @override
+  String get bmSelectBothFiles => '请同时选择输入文件和密钥文件。';
+
+  @override
+  String get bmDropFiles => '将 .nsp 或 .keys 文件拖放到此处';
+
+  @override
+  String get fpSelectStorage => '选择存储';
+
+  @override
+  String get fpInternalStorage => '内部存储';
+
+  @override
+  String fpRemovableStorage(String id) {
+    return '可移动存储 ($id)';
+  }
+
+  @override
+  String get fpGoUp => '返回上一级';
+
+  @override
+  String get fpNoStorageVolumes => '未找到存储卷。';
+
+  @override
+  String fpNoMatchingFiles(String ext) {
+    return '此文件夹中没有 $ext 文件。';
+  }
+
+  @override
+  String get fpFolderEmpty => '此文件夹为空。';
+
+  @override
+  String get fpSelectFolder => '选择此文件夹';
+
+  @override
+  String fpSelectCount(int count) {
+    return '选择 ($count)';
+  }
+
+  @override
+  String get fpPermissionDenied => '权限不足 \u2014 无法读取此文件夹。';
+
+  @override
+  String fpCouldNotOpen(String error) {
+    return '无法打开文件夹：$error';
+  }
+
+  @override
+  String get fpSelectAll => '全选';
+
+  @override
+  String get fpDeselectAll => '取消全选';
+
+  @override
+  String version(String version) {
+    return '版本 $version';
+  }
+
+  @override
+  String get errUnknown => '未知错误';
+
+  @override
+  String errKeysNotFound(String path) {
+    return '未找到 prod.keys 文件："$path"。';
+  }
+
+  @override
+  String get errBatchCancelled => '已取消';
 }

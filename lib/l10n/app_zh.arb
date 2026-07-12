@@ -290,5 +290,157 @@
   "allFilesGranted": "已授权——应用可以读写设备上任何位置的 ROM 文件。",
   "allFilesRequired": "需要此权限才能读写应用文件夹之外的 ROM 文件。",
   "granted": "已授权",
-  "grant": "授权"
+  "grant": "授权",
+  "bmTitle": "NSZ 性能基准测试",
+  "bmSetupFiles": "1. 设置文件",
+  "bmInputNsp": "输入 NSP 文件",
+  "bmInputNspHint": "选择要压缩的 NSP 游戏文件",
+  "bmKeysFile": "prod.keys 文件",
+  "bmKeysFileHint": "选择 prod.keys 密钥文件",
+  "bmConfigureParams": "2. 配置参数",
+  "bmReset": "重置",
+  "bmZstdThreads": "Zstandard 线程数",
+  "bmZstdDefault": "默认（核心数 - 2）",
+  "bmZstdAuto": "自动",
+  "bmIoChunkSize": "I/O 块大小",
+  "bmParallelNca": "并行 NCA 压缩",
+  "bmParallelNcaDesc": "在并行后台隔离区中压缩多个 NCA",
+  "bmStartBenchmark": "开始基准测试",
+  "bmCancelBenchmark": "取消基准测试",
+  "bmStatusIdle": "空闲",
+  "bmStatusInitializing": "初始化中...",
+  "bmStatusCompleted": "已完成！",
+  "bmStatusFailed": "失败",
+  "bmStatusCancelled": "已取消",
+  "bmResults": "基准测试结果",
+  "bmCopyReport": "复制报告",
+  "bmReportCopied": "基准测试报告已复制到剪贴板",
+  "bmTotalTime": "总用时",
+  "bmOriginalSize": "原始大小",
+  "bmCompressedSize": "压缩后大小",
+  "bmSavingsRatio": "节省比例",
+  "bmLog": "日志",
+  "bmCopy": "复制",
+  "bmLogCopied": "日志已复制到剪贴板",
+  "bmTerminalIdle": "终端空闲。请按"开始基准测试"。",
+  "bmHistory": "基准测试历史",
+  "bmHistoryClear": "清除",
+  "bmSavingsPercent": "节省 {percent}%",
+  "@bmSavingsPercent": {
+    "placeholders": {
+      "percent": {
+        "type": "num"
+      }
+    }
+  },
+  "bmDurationIn": "用时 {seconds} 秒",
+  "@bmDurationIn": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "bmConfigLine": "配置：{config}",
+  "@bmConfigLine": {
+    "placeholders": {
+      "config": {
+        "type": "String"
+      }
+    }
+  },
+  "bmParallel": "并行",
+  "bmSequential": "顺序",
+  "bmReuseSettings": "复用此次运行的设置",
+  "bmSystemInfo": "系统：{os} ({version}) \u2022 {cores} 个 CPU 核心",
+  "@bmSystemInfo": {
+    "placeholders": {
+      "os": {
+        "type": "String"
+      },
+      "version": {
+        "type": "String"
+      },
+      "cores": {
+        "type": "int"
+      }
+    }
+  },
+  "bmEtaRemaining": "剩余 {seconds} 秒",
+  "@bmEtaRemaining": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "bmStatusPrefix": "状态：{status}",
+  "@bmStatusPrefix": {
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "bmSelectBothFiles": "请同时选择输入文件和密钥文件。",
+  "bmDropFiles": "将 .nsp 或 .keys 文件拖放到此处",
+  "fpSelectStorage": "选择存储",
+  "fpInternalStorage": "内部存储",
+  "fpRemovableStorage": "可移动存储 ({id})",
+  "@fpRemovableStorage": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "fpGoUp": "返回上一级",
+  "fpNoStorageVolumes": "未找到存储卷。",
+  "fpNoMatchingFiles": "此文件夹中没有 {ext} 文件。",
+  "@fpNoMatchingFiles": {
+    "placeholders": {
+      "ext": {
+        "type": "String"
+      }
+    }
+  },
+  "fpFolderEmpty": "此文件夹为空。",
+  "fpSelectFolder": "选择此文件夹",
+  "fpSelectCount": "选择 ({count})",
+  "@fpSelectCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "fpPermissionDenied": "权限不足 \u2014 无法读取此文件夹。",
+  "fpCouldNotOpen": "无法打开文件夹：{error}",
+  "@fpCouldNotOpen": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "fpSelectAll": "全选",
+  "fpDeselectAll": "取消全选",
+  "version": "版本 {version}",
+  "@version": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "errUnknown": "未知错误",
+  "errKeysNotFound": "未找到 prod.keys 文件：\"{path}\"。",
+  "@errKeysNotFound": {
+    "placeholders": {
+      "path": {
+        "type": "String"
+      }
+    }
+  },
+  "errBatchCancelled": "已取消"
 }
