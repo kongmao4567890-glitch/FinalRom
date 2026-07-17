@@ -442,5 +442,9 @@
       }
     }
   },
-  "errBatchCancelled": "已取消"
+  "errBatchCancelled": "已取消",
+  "tabArchive": "归档",
+  "archiveFormat": "格式",
+  "archiveCompressHint": "将任意文件拖放到此处进行压缩",
+  "archiveDecompressHint": "将 .zip / .gz / .zst 文件拖放到此处进行解压"
 }

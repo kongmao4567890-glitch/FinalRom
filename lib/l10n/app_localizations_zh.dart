@@ -782,4 +782,16 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get errBatchCancelled => '已取消';
+
+  @override
+  String get tabArchive => '归档';
+
+  @override
+  String get archiveFormat => '格式';
+
+  @override
+  String get archiveCompressHint => '将任意文件拖放到此处进行压缩';
+
+  @override
+  String get archiveDecompressHint => '将 .zip / .gz / .zst 文件拖放到此处进行解压';
 }
