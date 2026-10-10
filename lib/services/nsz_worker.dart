@@ -67,7 +67,7 @@ class NszWorker {
           if (!await keysFile.exists()) {
             throw ArgumentError('prod.keys file not found at "$keysPath".');
           }
-          final keys = SwitchKeys.parse(await keysFile.readAsString());
+          final keys = await SwitchKeys.loadFromFile(keysFile.path);
           if (isXci) {
             await XczArchive.compress(
               inputXciPath: params.inputPath,

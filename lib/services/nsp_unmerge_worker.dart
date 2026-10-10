@@ -29,7 +29,7 @@ class NspUnmergeWorker {
       if (!await keysFile.exists()) {
         throw ArgumentError('prod.keys file not found at "${params.keysPath}".');
       }
-      final keys = SwitchKeys.parse(await keysFile.readAsString());
+      final keys = await SwitchKeys.loadFromFile(keysFile.path);
 
       final result = await NspUnmerger.unmerge(
         params.inputNspPath,

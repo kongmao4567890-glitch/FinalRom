@@ -21,6 +21,12 @@ class ThreeDsKeys {
 
   /// Parse the keys from 3dskeys.txt contents.
   /// Standard format: `keyName=hexValue`
+  /// The 3DS hardware key-scrambler constant. It is a fixed public algorithm
+  /// constant (not a console secret), and Citra-style `aes_keys.txt` files
+  /// omit it, so it is used when the file has no `generator` entry.
+  static final BigInt defaultGenerator =
+      BigInt.parse('1FF9E9AAC5FE0408024591DC5D52768A', radix: 16);
+
   factory ThreeDsKeys.parse(String text) {
     BigInt? generator;
     BigInt? keyX0x18;
@@ -64,13 +70,14 @@ class ThreeDsKeys {
       }
     }
 
-    if (generator == null ||
-        keyX0x18 == null ||
+    generator ??= defaultGenerator;
+
+    if (keyX0x18 == null ||
         keyX0x1B == null ||
         keyX0x25 == null ||
         keyX0x2C == null) {
       throw const FormatException(
-          'Missing required keys (generator, slot0x18KeyX, slot0x1BKeyX, slot0x25KeyX, slot0x2CKeyX) in 3dskeys.txt');
+          'Missing required keys (slot0x18KeyX, slot0x1BKeyX, slot0x25KeyX, slot0x2CKeyX) in 3dskeys.txt');
     }
 
     return ThreeDsKeys(

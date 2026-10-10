@@ -157,7 +157,7 @@ class Nca {
     final usesTitleKey = rightsId.any((byte) => byte != 0);
 
     final bodyKeyCtr = usesTitleKey
-        ? _titleKeyOrThrow(resolveTicket?.call(rightsId), keys)
+        ? _titleKeyOrThrow(resolveTicket?.call(rightsId), keys, rightsId)
         : SwitchKeys.aesEcbDecrypt(
             keys.keyAreaKek(keyIndex, generation),
             Uint8List.sublistView(header, keyAreaBase + 0x20, keyAreaBase + 0x30),
@@ -244,8 +244,12 @@ class Nca {
     return counter;
   }
 
-  static Uint8List _titleKeyOrThrow(SwitchTicket? ticket, SwitchKeys keys) {
+  static Uint8List _titleKeyOrThrow(
+      SwitchTicket? ticket, SwitchKeys keys, Uint8List rightsId) {
     if (ticket == null) {
+      // No ticket in the package: fall back to a user-supplied title.keys.
+      final fromFile = keys.titleKeyFor(rightsId);
+      if (fromFile != null) return fromFile;
       throw const FormatException(
           'NCA uses titlekey crypto but no ticket was provided.');
     }

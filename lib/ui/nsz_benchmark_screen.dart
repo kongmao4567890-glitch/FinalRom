@@ -41,7 +41,7 @@ class _BenchmarkParams {
 
 void _runBenchmarkIsolate(_BenchmarkParams params) async {
   try {
-    final keys = SwitchKeys.parse(await File(params.keysPath).readAsString());
+    final keys = await SwitchKeys.loadFromFile(params.keysPath);
     await NszArchive.compress(
       inputNspPath: params.inputPath,
       outputPath: params.outputPath,

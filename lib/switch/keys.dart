@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:pointycastle/export.dart';
@@ -19,7 +20,50 @@ import 'package:pointycastle/export.dart';
 class SwitchKeys {
   final Map<String, Uint8List> _keys;
 
+  /// Decrypted title keys from an optional `title.keys` file, keyed by the
+  /// lowercase hex rights id. Used for NCAs that need titlekey crypto when the
+  /// package carries no ticket (stripped NSPs, XCI, ...).
+  final Map<String, Uint8List> _titleKeys = {};
+
   SwitchKeys._(this._keys);
+
+  /// Loads `prod.keys` from [path] and, if a `title.keys` file sits next to
+  /// it, merges that in too so title keys are picked up automatically.
+  static Future<SwitchKeys> loadFromFile(String path) async {
+    final keys = SwitchKeys.parse(await File(path).readAsString());
+    final sibling = File(
+        '${File(path).parent.path}${Platform.pathSeparator}title.keys');
+    if (await sibling.exists()) {
+      keys.addTitleKeys(await sibling.readAsString());
+    }
+    return keys;
+  }
+
+  /// Merges the contents of a `title.keys` file (`rights_id = title_key`, both
+  /// 32 hex digits; the key may be followed by `| name` comments).
+  void addTitleKeys(String contents) {
+    for (final rawLine in contents.split('\n')) {
+      final line = rawLine.trim();
+      if (line.isEmpty || line.startsWith(';') || line.startsWith('#')) {
+        continue;
+      }
+      final separator = line.indexOf('=');
+      if (separator < 0) continue;
+      final id = line.substring(0, separator).trim().toLowerCase();
+      final value =
+          line.substring(separator + 1).trim().split(RegExp(r'[\s|]')).first;
+      final key = _tryParseHex(value);
+      if (id.length == 32 && key != null && key.length == 16) {
+        _titleKeys[id] = key;
+      }
+    }
+  }
+
+  /// The decrypted title key for [rightsId] from `title.keys`, or null.
+  Uint8List? titleKeyFor(Uint8List rightsId) {
+    final hex = rightsId.map((b) => b.toRadixString(16).padLeft(2, '0')).join();
+    return _titleKeys[hex];
+  }
 
   /// Parses the text content of a `prod.keys` file.
   factory SwitchKeys.parse(String contents) {
