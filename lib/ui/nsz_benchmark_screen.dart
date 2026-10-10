@@ -11,6 +11,7 @@ import 'home_screen.dart';
 import 'theme.dart';
 
 import '../settings/settings_cubit.dart';
+import '../services/bundled_keys.dart';
 import '../services/file_service.dart';
 import '../switch/keys.dart';
 import '../switch/nsz_archive.dart';
@@ -147,6 +148,8 @@ class _NszBenchmarkScreenState extends State<NszBenchmarkScreen> {
     final savedNsp = prefs.getString('nsz_benchmark_nsp_path') ?? '';
     final savedKeys = prefs.getString('nsz_benchmark_keys_path') ?? '';
 
+    final bundledKeys = await BundledKeys.switchKeysPath();
+
     setState(() {
       if (savedNsp.isNotEmpty && File(savedNsp).existsSync()) {
         _inputPath = savedNsp;
@@ -157,7 +160,7 @@ class _NszBenchmarkScreenState extends State<NszBenchmarkScreen> {
       if (savedKeys.isNotEmpty && File(savedKeys).existsSync()) {
         _keysPath = savedKeys;
       } else {
-        _keysPath = '';
+        _keysPath = bundledKeys ?? '';
       }
     });
   }

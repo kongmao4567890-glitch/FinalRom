@@ -7,6 +7,7 @@ import 'package:final_rom/l10n/app_localizations.dart';
 
 import '../settings/app_settings.dart';
 import '../settings/settings_cubit.dart';
+import '../services/bundled_keys.dart';
 import '../services/file_service.dart';
 import '../services/crypto_worker.dart';
 import '../blocs/conversion_bloc.dart';
@@ -41,9 +42,13 @@ class _ThreeDsTabState extends State<ThreeDsTab> {
 
   Future<void> _loadKeysPath() async {
     final prefs = await SharedPreferences.getInstance();
+    final saved = prefs.getString('three_ds_keys_path');
+    final path = (saved != null && File(saved).existsSync())
+        ? saved
+        : await BundledKeys.threeDsKeysPath();
     if (mounted) {
       setState(() {
-        _keysPath = prefs.getString('three_ds_keys_path');
+        _keysPath = path;
       });
     }
   }

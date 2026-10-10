@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path/path.dart' as p;
 import 'package:final_rom/l10n/app_localizations.dart';
 
+import '../services/bundled_keys.dart';
 import '../services/file_service.dart';
 import '../services/nsz_worker.dart';
 import '../services/switch_progress.dart';
@@ -44,6 +45,22 @@ class _SwitchTabState extends State<SwitchTab> {
 
   // Decompress queue
   List<String> _decompressFiles = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadBundledKeys();
+  }
+
+  /// Pre-selects the keys bundled with the app; picking a file still overrides.
+  Future<void> _loadBundledKeys() async {
+    final path = await BundledKeys.switchKeysPath();
+    if (path == null || !mounted) return;
+    setState(() {
+      _keysPath ??= path;
+      _unmergeKeysPath ??= path;
+    });
+  }
 
   bool _hasExt(String path, List<String> exts) {
     final lower = path.toLowerCase();
