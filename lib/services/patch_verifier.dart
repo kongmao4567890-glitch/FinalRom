@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:isolate';
 import 'dart:typed_data';
 import 'package:path/path.dart' as p;
 import '../patcher/checksums.dart';
@@ -10,7 +11,17 @@ enum CompatibilityResult {
 }
 
 class PatchVerifier {
+  /// Runs the check on a background isolate: hashing a multi-hundred-MB ROM on
+  /// the UI isolate froze the app as soon as a large file was selected.
   static Future<CompatibilityResult> checkCompatibility(String patchPath, String romPath) async {
+    try {
+      return await Isolate.run(() => _check(patchPath, romPath));
+    } catch (_) {
+      return CompatibilityResult.unverifiable;
+    }
+  }
+
+  static Future<CompatibilityResult> _check(String patchPath, String romPath) async {
     final patchFile = File(patchPath);
     final romFile = File(romPath);
 

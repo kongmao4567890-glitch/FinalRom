@@ -27,8 +27,10 @@ class _PatcherTabState extends State<PatcherTab> {
   String? _selectedPatchFile;
   CompatibilityResult _compatibility = CompatibilityResult.unverifiable;
   bool _isCheckingCompatibility = false;
+  int _checkGeneration = 0; // discards results of superseded checks
 
   void _checkCompatibility() async {
+    final generation = ++_checkGeneration;
     if (_selectedRomFile == null || _selectedPatchFile == null) {
       setState(() {
         _compatibility = CompatibilityResult.unverifiable;
@@ -43,7 +45,7 @@ class _PatcherTabState extends State<PatcherTab> {
 
     final result = await PatchVerifier.checkCompatibility(_selectedPatchFile!, _selectedRomFile!);
 
-    if (mounted) {
+    if (mounted && generation == _checkGeneration) {
       setState(() {
         _compatibility = result;
         _isCheckingCompatibility = false;

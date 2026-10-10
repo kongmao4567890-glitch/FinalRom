@@ -9,10 +9,13 @@ import 'package:final_rom/io_tuning.dart';
 /// Dart has no CRC-32 in its standard library, so we implement a small
 /// table-based, streaming version that can be fed chunk by chunk.
 class Crc32 {
-  static final Uint32List _table = _buildTable();
+  /// Slicing-by-8 tables: [_tables] holds 8 consecutive 256-entry tables, which
+  /// lets the hot loop consume 8 bytes per iteration (~5-8x faster than the
+  /// classic byte-at-a-time loop on multi-hundred-MB files).
+  static final Uint32List _tables = _buildTables();
 
-  static Uint32List _buildTable() {
-    final table = Uint32List(256);
+  static Uint32List _buildTables() {
+    final t = Uint32List(256 * 8);
     for (int index = 0; index < 256; index++) {
       int value = index;
       for (int bit = 0; bit < 8; bit++) {
@@ -22,9 +25,16 @@ class Crc32 {
           value = value >> 1;
         }
       }
-      table[index] = value;
+      t[index] = value;
     }
-    return table;
+    for (int index = 0; index < 256; index++) {
+      int value = t[index];
+      for (int k = 1; k < 8; k++) {
+        value = t[value & 0xFF] ^ (value >> 8);
+        t[k * 256 + index] = value;
+      }
+    }
+    return t;
   }
 
   int _crc = 0xFFFFFFFF;
@@ -32,11 +42,41 @@ class Crc32 {
   /// Feeds [bytes] (optionally a `[start, end)` slice) into the running CRC.
   void update(List<int> bytes, [int start = 0, int? end]) {
     final last = end ?? bytes.length;
+    if (bytes is Uint8List) {
+      _crc = _updateFast(_crc, bytes, start, last);
+      return;
+    }
+    final t = _tables;
     int crc = _crc;
     for (int i = start; i < last; i++) {
-      crc = _table[(crc ^ bytes[i]) & 0xFF] ^ (crc >> 8);
+      crc = t[(crc ^ bytes[i]) & 0xFF] ^ (crc >> 8);
     }
     _crc = crc;
+  }
+
+  static int _updateFast(int crc, Uint8List b, int start, int end) {
+    final t = _tables;
+    int i = start;
+    final int fastEnd = end - ((end - start) & 7);
+    while (i < fastEnd) {
+      final int lo = (crc ^
+              (b[i] | (b[i + 1] << 8) | (b[i + 2] << 16) | (b[i + 3] << 24))) &
+          0xFFFFFFFF;
+      crc = t[1792 + (lo & 0xFF)] ^
+          t[1536 + ((lo >> 8) & 0xFF)] ^
+          t[1280 + ((lo >> 16) & 0xFF)] ^
+          t[1024 + (lo >> 24)] ^
+          t[768 + b[i + 4]] ^
+          t[512 + b[i + 5]] ^
+          t[256 + b[i + 6]] ^
+          t[b[i + 7]];
+      i += 8;
+    }
+    while (i < end) {
+      crc = t[(crc ^ b[i]) & 0xFF] ^ (crc >> 8);
+      i++;
+    }
+    return crc;
   }
 
   /// The final CRC-32 value as an unsigned 32-bit integer.
@@ -50,17 +90,21 @@ int crc32Bytes(List<int> bytes, [int start = 0, int? end]) {
   return crc.value;
 }
 
-/// Computes the CRC-32 of an entire file by streaming it in
-/// [patchCopyBufferSize] chunks, avoiding loading large ROMs fully into memory.
-Future<int> crc32OfFile(File file) async {
+/// Computes the CRC-32 of a file by streaming it in [patchCopyBufferSize]
+/// chunks, avoiding loading large ROMs fully into memory. If [length] is given
+/// only the first [length] bytes are hashed.
+Future<int> crc32OfFile(File file, {int? length}) async {
   final crc = Crc32();
   final raf = await file.open(mode: FileMode.read);
   try {
     const bufferSize = patchCopyBufferSize;
-    while (true) {
-      final chunk = await raf.read(bufferSize);
+    int remaining = length ?? (1 << 62);
+    while (remaining > 0) {
+      final chunk =
+          await raf.read(remaining < bufferSize ? remaining : bufferSize);
       if (chunk.isEmpty) break;
       crc.update(chunk);
+      remaining -= chunk.length;
     }
   } finally {
     await raf.close();

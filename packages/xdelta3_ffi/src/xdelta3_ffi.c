@@ -33,7 +33,9 @@
 #include "xdelta/xdelta3.c"
 
 static int decode_stream(FILE *in, FILE *src, FILE *out, int ignore_checksum) {
-  const int BUFFER_SIZE = 0x1000;
+  /* 1 MiB I/O blocks: the original 4 KiB size meant one fseek+fread per 4 KiB
+   * of source data, which made large patches crawl. */
+  const int BUFFER_SIZE = 0x100000;
 
   int r, ret;
   xd3_stream stream;
@@ -54,6 +56,10 @@ static int decode_stream(FILE *in, FILE *src, FILE *out, int ignore_checksum) {
 
   source.blksize = BUFFER_SIZE;
   source.curblk = malloc(source.blksize);
+  if (!source.curblk) {
+    xd3_free_stream(&stream);
+    return XDELTA3_FFI_ERR_OPEN_ROM;
+  }
 
   if (fseek(src, 0, SEEK_SET)) {
     free((void *)source.curblk);
@@ -65,6 +71,11 @@ static int decode_stream(FILE *in, FILE *src, FILE *out, int ignore_checksum) {
   xd3_set_source(&stream, &source);
 
   input_buf = malloc(BUFFER_SIZE);
+  if (!input_buf) {
+    free((void *)source.curblk);
+    xd3_free_stream(&stream);
+    return XDELTA3_FFI_ERR_OPEN_PATCH;
+  }
   fseek(in, 0, SEEK_SET);
 
   do {
@@ -151,6 +162,12 @@ FFI_PLUGIN_EXPORT int xdelta3_apply(const char *patch_path,
     fclose(rom);
     return XDELTA3_FFI_ERR_OPEN_OUTPUT;
   }
+
+  /* Large stdio buffers cut syscall overhead; the decoder already reads and
+   * writes in big blocks. */
+  setvbuf(patch, NULL, _IOFBF, 1 << 20);
+  setvbuf(rom, NULL, _IOFBF, 1 << 20);
+  setvbuf(out, NULL, _IOFBF, 1 << 22);
 
   int ret = decode_stream(patch, rom, out, ignore_checksum);
 
